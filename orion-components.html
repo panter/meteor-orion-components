@@ -1,0 +1,12 @@
+<template name="orion_components_frontend_components">
+	{{#each components}}
+		{{>orion_components_frontend_component}}
+	{{/each}}
+</template>
+
+<template name="orion_components_frontend_component">
+	{{>Template.dynamic template=definition.templateFrontend data=data}}
+</template>
+
+
+
