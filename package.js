@@ -12,7 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
-  api.use(['ecmascript', 'less', 'orionjs:core', 'reactive-var']);
+  api.use(['ecmascript', 'less', 'orionjs:core@1.7.0', 'reactive-var']);
   api.addFiles('orion-components.html');
   api.addFiles('orion-components.js');
   api.addFiles('orion-components.less');
