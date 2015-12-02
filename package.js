@@ -1,6 +1,6 @@
 Package.describe({
   name: 'panter:orion-components',
-  version: '0.0.1',
+  version: '0.0.2',
   // Brief, one-line summary of the package.
   summary: 'create components in orion',
   // URL to the Git repository containing the source code for this package.
@@ -12,7 +12,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.2.1');
-  api.use(['ecmascript', 'less', 'orionjs:core']);
+  api.use(['ecmascript', 'less', 'orionjs:core', 'reactive-var']);
   api.addFiles('orion-components.html');
   api.addFiles('orion-components.js');
   api.addFiles('orion-components.less');
