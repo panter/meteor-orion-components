@@ -60,9 +60,25 @@ orion.components = {
 
 						let fieldName = this.name;
 						let [component, ___, ...prefix] = fieldName.split(".").reverse();
-						let definitionField = `${prefix.reverse().join(".")}.definitionId`;
-						let definition = AutoForm.getFieldValue(definitionField);
-						//console.log(definitionField, definition, fieldName);
+						
+						// workaround:
+						// AutoForm.getFieldValue(definitionField) will invalidate computations
+						// even if the value has not changed
+						// we "debounce" this by creating a reactive var that stores the value
+						let templateInstance = Template.instance();
+						if(!templateInstance._componentDefinitionId) {
+							let definitionField = `${prefix.reverse().join(".")}.definitionId`;
+							templateInstance._componentDefinitionId = new ReactiveVar();
+							Tracker.nonreactive(function(){
+								templateInstance.autorun(function(){
+									templateInstance._componentDefinitionId.set(AutoForm.getFieldValue(definitionField));
+								});
+							});
+							
+						}
+
+						let definition = templateInstance._componentDefinitionId.get();
+						
 						return definition === component ? "component-definition component-definition-selected" : "component-definition component-definition-not-selected"
 						//return "component-definition component-definition-selected";
 					}
