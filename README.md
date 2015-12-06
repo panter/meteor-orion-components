@@ -119,8 +119,10 @@ E.g. you can use this together with `panter:slick-blaze` to create a carousel wh
 </template>
 ````
 
+
+
 ## TODO / Issues
 
-- [] use orion.attributes instead of define the type `type: orion.components.components({...})` in schemas
-- [] removing a component may be buggy (issue seems related to aldeed:autoform)
-- [] slow performance in admin-area because of re-rendering on changes. 
+- [ ] use orion.attributes instead of define the type `type: orion.components.components({...})` in schemas
+- [ ] removing a component may be buggy (issue seems related to aldeed:autoform)
+- [ ] slow performance in admin-area because of re-rendering on changes. 
