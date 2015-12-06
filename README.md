@@ -119,6 +119,10 @@ E.g. you can use this together with `panter:slick-blaze` to create a carousel wh
 </template>
 ````
 
+### Screenshot
+
+![Sample page](screenshot.png?raw=true "Screenshot")
+
 
 
 ## TODO / Issues
