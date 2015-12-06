@@ -23,7 +23,7 @@ orion.components.registerComponent("title_text_image", {
 			label: "Title"
 		},
 		text: orion.attribute('froala', {
-			label: 'BoxText'
+			label: 'Text'
 		}),
 		image: orion.attribute("image", {label: "Image"})
 	})
