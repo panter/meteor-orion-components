@@ -134,3 +134,4 @@ The resulting form of the page contains now an array that can contain multiple c
 - [ ] removing a component may be buggy (issue seems related to aldeed:autoform)
 - [ ] slow performance in admin-area because of re-rendering on changes. 
 - [ ] make it compatible with materialize
+- [ ] remove unnessesary panels in the resulting autoform
