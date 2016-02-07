@@ -41,8 +41,9 @@ orion.components = {
 				autoform: {
 					template: "bootstrap3_components"
 				},
-				type: orion.components.schemaComponentData({allowedComponents})
 
+				type: orion.components.schemaComponentData({allowedComponents}),
+				
 			},
 		});
 	},
@@ -61,7 +62,8 @@ orion.components = {
 				optional: true,
 				autoform: {
 					template: "bootstrap3"
-				}
+				},
+				
 			};
 		}
 		return new SimpleSchema(allCompomentsSchema);
@@ -101,7 +103,6 @@ if(Meteor.isClient) {
 	Template.afArrayField_bootstrap3_components_oneItem.helpers({
 		
 		fieldNameDefinitionId() {
-			
 			return `${this.name}.definitionId`;
 		},
 		fieldNameData() {
@@ -132,13 +133,12 @@ if(Meteor.isClient) {
 		}
 	});
 
-	Template.afArrayField_bootstrap3_components_oneItem_preview.onRendered(function(){
-		console.log($(this.firstNode).width());
-	})
+	
 	Template.afArrayField_bootstrap3_components_oneItem.onCreated(function(){
 		let definitionField = `${this.data.name}.definitionId`;
 		this.selectedDefinitionId = new ReactiveVar();
-		this.isEditing = new ReactiveVar(false);
+		let isNew = _.isEmpty(AutoForm.getFieldValue(definitionField));
+		this.isEditing = new ReactiveVar(isNew);
 		// AutoForm.getFieldValue is buggy, when the item is in a array, because we will have the wrong field name for these items
 		// see https://github.com/aldeed/meteor-autoform/issues/833
 		// we therefore attach an event to catch the value of the definitionId (see events)
@@ -146,8 +146,6 @@ if(Meteor.isClient) {
 	});
 
 
-
-	
 	
 	Template.orion_components_frontend_component.helpers({
 		data() {

@@ -27,12 +27,14 @@
    {{/if}}
    
   
-   {{#if selectedDefinitionId}}
+   
    <span class="{{#unless isEditing}}hidden{{/unless}}">
      <button class="btn btn-finish-edit">Preview</button>
        {{> afQuickField name=fieldNameDefinitionId}}
-
-     {{> afQuickField name=fieldNameData}}
+  
+      {{#if selectedDefinitionId}}
+        {{> afQuickField name=fieldNameData}}
+      {{/if}}
 
    </span>
    {{#unless isEditing}}
@@ -40,9 +42,9 @@
 
    {{>afArrayField_bootstrap3_components_oneItem_preview definitionId=selectedDefinitionId componentData=subDoc}}
    {{/unless}}
-    {{else}}
-     {{> afQuickField name=fieldNameDefinitionId}}
-   {{/if}}
+
+    
+  
  </div>
 </li>
 </template>
@@ -58,13 +60,12 @@
 
     <ul class="list-group">
       {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-
-      {{>afArrayField_bootstrap3_components_oneItem}}
+        {{>afArrayField_bootstrap3_components_oneItem}}
       {{/afEachArrayItem}}
       {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-      <li class="list-group-item">
-        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
-      </li>
+        <li class="list-group-item">
+          <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
+        </li>
       {{/if}}
     </ul>
   </div>
