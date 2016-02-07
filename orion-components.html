@@ -22,8 +22,8 @@
 <template name="afArrayField_bootstrap3_components_oneItem">
  <li class="list-group-item afArrayField_bootstrap3_components_oneItem">
  <div class="actions">
-   <div class="wrapper-definitionId">
-    {{> afQuickField name=fieldNameDefinitionId disabled=definitionSelectDisabled}}
+   <div class="wrapper-definitionId {{#unless isEditing}}hidden{{/unless}}">
+    {{> afQuickField name=fieldNameDefinitionId }}
   </div>
 
   
