@@ -128,10 +128,15 @@ The resulting form of the page contains now an array that can contain multiple c
 
 
 
-## TODO / Issues
+## TODO / Issues / History
 
 - [ ] use orion.attributes instead of define the type `type: orion.components.components({...})` in schemas
-- [ ] removing a component may be buggy (issue seems related to aldeed:autoform)
-- [ ] slow performance in admin-area because of re-rendering on changes. 
 - [ ] make it compatible with materialize
-- [ ] remove unnessesary panels in the resulting autoform
+
+### version 0.1.0
+
+- [x] remove unnessesary panels in the resulting autoform
+- [x] slow performance in admin-area because of re-rendering on changes. 
+- [x] removing a component may be buggy (issue seems related to aldeed:autoform)
+- [x] show preview
+
