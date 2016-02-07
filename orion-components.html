@@ -1,7 +1,7 @@
 <template name="orion_components_frontend_components">
 	{{#each components}}
-		{{>orion_components_frontend_component}}
-	{{/each}}
+  {{>orion_components_frontend_component}}
+  {{/each}}
 </template>
 
 <template name="orion_components_frontend_component">
@@ -10,3 +10,62 @@
 
 
 
+
+
+<template name="afArrayField_bootstrap3_components_oneItem_preview">
+  <div class="afArrayField_bootstrap3_components_oneItem_preview">
+   {{>orion_components_frontend_component data=componentData definitionId=definitionId}}
+ </div>
+</template>
+
+
+<template name="afArrayField_bootstrap3_components_oneItem">
+ <li class="list-group-item ">
+  <div>
+   {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+   <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+   {{/if}}
+   
+  
+   {{#if selectedDefinitionId}}
+   <span class="{{#unless isEditing}}hidden{{/unless}}">
+     <button class="btn btn-finish-edit">Preview</button>
+       {{> afQuickField name=fieldNameDefinitionId}}
+
+     {{> afQuickField name=fieldNameData}}
+
+   </span>
+   {{#unless isEditing}}
+   <button class="btn btn-edit">Edit</button>
+
+   {{>afArrayField_bootstrap3_components_oneItem_preview definitionId=selectedDefinitionId componentData=subDoc}}
+   {{/unless}}
+    {{else}}
+     {{> afQuickField name=fieldNameDefinitionId}}
+   {{/if}}
+ </div>
+</li>
+</template>
+
+
+<template name="afArrayField_bootstrap3_components">
+	<div class="afArrayField_bootstrap3_components">
+    {{#if afFieldIsInvalid name=this.atts.name}}
+    <div class="panel-body has-error">
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+    </div>
+    {{/if}}
+
+    <ul class="list-group">
+      {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+
+      {{>afArrayField_bootstrap3_components_oneItem}}
+      {{/afEachArrayItem}}
+      {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+      <li class="list-group-item">
+        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
+      </li>
+      {{/if}}
+    </ul>
+  </div>
+</template>

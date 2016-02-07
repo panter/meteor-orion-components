@@ -21,11 +21,17 @@ orion.components = {
 				type: [Object],
 				label: label,
 				optional: optional,
+				autoform: {
+					template: "bootstrap3_components"
+				}
 				
 			},
 			"components.$.definitionId": {
 				type: String,
+				label: "Component",
 				autoform: {
+					class: "input-lg definitionId",
+					template: "bootstrap3",
 					options(){
 						return orion.components.definitionsOptions({allowedComponents});
 					}
@@ -33,9 +39,9 @@ orion.components = {
 			},
 			"components.$.data": {
 				autoform: {
-					panelClass: "component"
+					template: "bootstrap3_components"
 				},
-				type: orion.components.schemaComponentData({allowedComponents}),
+				type: orion.components.schemaComponentData({allowedComponents})
 
 			},
 		});
@@ -53,54 +59,108 @@ orion.components = {
 			allCompomentsSchema[id] = {
 				type: this.definitions[id].schema,
 				optional: true,
-				
 				autoform: {
-
-					panelClass: function(){
-
-						let fieldName = this.name;
-						let [component, ___, ...prefix] = fieldName.split(".").reverse();
-						
-						// workaround:
-						// AutoForm.getFieldValue(definitionField) will invalidate computations
-						// even if the value has not changed
-						// we "debounce" this by creating a reactive var that stores the value
-						let templateInstance = Template.instance();
-						if(!templateInstance._componentDefinitionId) {
-							let definitionField = `${prefix.reverse().join(".")}.definitionId`;
-							templateInstance._componentDefinitionId = new ReactiveVar();
-							Tracker.nonreactive(function(){
-								templateInstance.autorun(function(){
-									templateInstance._componentDefinitionId.set(AutoForm.getFieldValue(definitionField));
-								});
-							});
-							
-						}
-
-						let definition = templateInstance._componentDefinitionId.get();
-						
-						return definition === component ? "component-definition component-definition-selected" : "component-definition component-definition-not-selected"
-						//return "component-definition component-definition-selected";
-					}
+					template: "bootstrap3"
 				}
 			};
 		}
 		return new SimpleSchema(allCompomentsSchema);
 	}
+
+
 }
 
 
-
+Testcolleciton = new Meteor.Collection("orion.components");
 if(Meteor.isClient) {
+	// fix problem with arrays in autoform
+	// autoform seems to not re-index arrays
+	// we do this here, but only for our components
+	AutoForm.addHooks(null, {
+		formToModifier(modifier) {
+			
+			if(modifier.$set) {
+				for(key in modifier.$set) {
+					let value = modifier.$set[key];
+					if(_.isArray(value)) {
+						let [suffix, ...parts] = key.split(".").reverse();
+						if(suffix === "components") {
+							modifier.$set[key] = _.compact(value).filter((val) => val);
+						}
+					}
+				}
+			}
+			return modifier;
+		},
+		formToDoc(doc) {
+			console.log(doc);
+			return doc;
+		}
+	});
+
+	Template.afArrayField_bootstrap3_components_oneItem.helpers({
+		
+		fieldNameDefinitionId() {
+			
+			return `${this.name}.definitionId`;
+		},
+		fieldNameData() {
+			return `${this.name}.data.${Template.instance().selectedDefinitionId.get()}`;
+		},
+		selectedDefinitionId() {
+			return Template.instance().selectedDefinitionId.get();
+		},
+		subDoc() {
+			return AutoForm.getFieldValue(`${this.name}.data`);
+		},
+		isEditing() {
+			return Template.instance().isEditing.get();
+		}
+	})
+
+	Template.afArrayField_bootstrap3_components_oneItem.events({
+		["change .definitionId"](event, template){
+			template.selectedDefinitionId.set($(event.currentTarget).val());
+		},
+		["click .btn-edit"](event, template) {
+			template.isEditing.set(true);
+			return false;
+		},
+		["click .btn-finish-edit"](event, template) {
+			template.isEditing.set(false);
+			return false;
+		}
+	});
+
+	Template.afArrayField_bootstrap3_components_oneItem_preview.onRendered(function(){
+		console.log($(this.firstNode).width());
+	})
+	Template.afArrayField_bootstrap3_components_oneItem.onCreated(function(){
+		let definitionField = `${this.data.name}.definitionId`;
+		this.selectedDefinitionId = new ReactiveVar();
+		this.isEditing = new ReactiveVar(false);
+		// AutoForm.getFieldValue is buggy, when the item is in a array, because we will have the wrong field name for these items
+		// see https://github.com/aldeed/meteor-autoform/issues/833
+		// we therefore attach an event to catch the value of the definitionId (see events)
+		this.selectedDefinitionId.set(AutoForm.getFieldValue(definitionField));
+	});
+
+
+
+	
+	
 	Template.orion_components_frontend_component.helpers({
 		data() {
-			return this.data[this.definitionId];
+			if(this.data)
+				return this.data[this.definitionId];
 		},
 		definition(){
 			let definition = orion.components.getDefinition(this.definitionId);
 			return definition;
 		}
 	});
+
+	
 }
 
 
