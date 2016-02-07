@@ -30,7 +30,7 @@ orion.components = {
 				type: String,
 				label: "Component",
 				autoform: {
-					class: "input-lg definitionId",
+					class: "input-lg select-definitionId",
 					template: "bootstrap3",
 					options(){
 						return orion.components.definitionsOptions({allowedComponents});
@@ -95,13 +95,15 @@ if(Meteor.isClient) {
 			return modifier;
 		},
 		formToDoc(doc) {
-			console.log(doc);
+			
 			return doc;
 		}
 	});
 
 	Template.afArrayField_bootstrap3_components_oneItem.helpers({
-		
+		definitionSelectDisabled() {
+			return !Template.instance().isEditing.get();
+		}, 
 		fieldNameDefinitionId() {
 			return `${this.name}.definitionId`;
 		},
@@ -120,7 +122,7 @@ if(Meteor.isClient) {
 	})
 
 	Template.afArrayField_bootstrap3_components_oneItem.events({
-		["change .definitionId"](event, template){
+		["change .select-definitionId"](event, template){
 			template.selectedDefinitionId.set($(event.currentTarget).val());
 		},
 		["click .btn-edit"](event, template) {

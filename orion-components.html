@@ -20,32 +20,39 @@
 
 
 <template name="afArrayField_bootstrap3_components_oneItem">
- <li class="list-group-item ">
-  <div>
-   {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
-   <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span></button>
+ <li class="list-group-item afArrayField_bootstrap3_components_oneItem">
+ <div class="actions">
+   <div class="wrapper-definitionId">
+    {{> afQuickField name=fieldNameDefinitionId disabled=definitionSelectDisabled}}
+  </div>
+
+  
+
+  {{#if isEditing}}
+  <button class="btn btn-default btn-finish-edit"><i class="fa fa-eye"></i> Preview</button>
+  {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+   <button type="button" class="btn btn-primary autoform-remove-item"><span class="glyphicon glyphicon-minus"></span> Remove</button>
    {{/if}}
-   
-  
-   
-   <span class="{{#unless isEditing}}hidden{{/unless}}">
-     <button class="btn btn-finish-edit">Preview</button>
-       {{> afQuickField name=fieldNameDefinitionId}}
-  
-      {{#if selectedDefinitionId}}
-        {{> afQuickField name=fieldNameData}}
-      {{/if}}
+  {{else}}
+  <button class="btn btn-default btn-edit"><i class="fa fa-pencil"></i> Edit</button>
+  {{/if}}
+</div>
+<div class="{{#unless isEditing}}hidden{{/unless}}">
 
-   </span>
-   {{#unless isEditing}}
-   <button class="btn btn-edit">Edit</button>
+  {{#if selectedDefinitionId}}
 
-   {{>afArrayField_bootstrap3_components_oneItem_preview definitionId=selectedDefinitionId componentData=subDoc}}
-   {{/unless}}
+  {{> afQuickField name=fieldNameData}}
 
-    
-  
- </div>
+  {{/if}}
+
+</div>
+{{#unless isEditing}}
+{{>afArrayField_bootstrap3_components_oneItem_preview definitionId=selectedDefinitionId componentData=subDoc}}
+{{/unless}}
+
+
+
+
 </li>
 </template>
 
@@ -60,12 +67,12 @@
 
     <ul class="list-group">
       {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-        {{>afArrayField_bootstrap3_components_oneItem}}
+      {{>afArrayField_bootstrap3_components_oneItem}}
       {{/afEachArrayItem}}
       {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
-        <li class="list-group-item">
-          <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
-        </li>
+      <li class="list-group-item">
+        <button type="button" class="btn btn-primary autoform-add-item" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="glyphicon glyphicon-plus"></span></button>
+      </li>
       {{/if}}
     </ul>
   </div>
